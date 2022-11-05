@@ -18,8 +18,8 @@ source "proxmox" "opnsense" {
   # ============================
   # ISO Settings
   # ============================  
-  iso_file         = "${var.iso_file}"
-  unmount_iso      = true # Unmount the iso from the CD drive
+  iso_file    = "${var.iso_file}"
+  unmount_iso = true # Unmount the iso from the CD drive
 
   # ============================
   # Resource Settings
