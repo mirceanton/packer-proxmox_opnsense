@@ -1,0 +1,26 @@
+---
+name: Validate Packer Code
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  line:
+    runs-on: ubuntu-latest
+  
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Download Packer Binary
+      shell: |
+        apt install -y wget unzip
+        wget https://releases.hashicorp.com/packer/1.8.4/packer_1.8.4_linux_amd64.zip
+        unzip packer_1.8.4_linux_amd64.zip
+        rm packer_1.8.4_linux_amd64.zip
+
+    - name: Run packer fmt
+      shell: [ $(packer fmt . | wc -l) == 0 ]
