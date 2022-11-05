@@ -35,7 +35,7 @@ source "proxmox" "opnsense" {
   disks {
     disk_size         = "{{ disk.size | default('16G') }}"
     storage_pool      = "{{ disk.storage_pool }}"
-    storage_pool_type = "{{ disk_storage_pool_type }}"
+    storage_pool_type = "{{ disk.storage_pool_type }}"
   }
   {% endfor %}
 
