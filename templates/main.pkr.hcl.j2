@@ -12,7 +12,7 @@ source "proxmox" "opnsense" {
   # ============================
   node       = "{{ opnsense_tpl_node }}"
   vm_id      = "{{ opnsense_tpl_id }}"
-  vm_name    = "{{ opnsense_tpl_name }}"
+  vm_name    = "{{ opnsense_tpl_name | default('opnSense-tpl') }}"
   qemu_agent = {{ opnsense_tpl_agent | default(false) | string | lower }}
 
   # ============================
