@@ -91,11 +91,11 @@ source "proxmox" "opnsense" {
     "<wait1>",
 
     # Set root password
-    "${var.opnsense_root_password}", "<wait1>", "<enter>",
+    "{{ opnsense_tpl_root_pass }}", "<wait1>", "<enter>",
     "<wait1>",
 
     # Confirm password
-    "${var.opnsense_root_password}", "<wait1>", "<enter>",
+    "{{ opnsense_tpl_root_pass }}", "<wait1>", "<enter>",
     "<wait1>",
 
     # Select 'Complete Install'
