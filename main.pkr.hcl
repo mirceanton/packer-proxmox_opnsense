@@ -55,7 +55,7 @@ source "proxmox" "opnsense" {
   # Boot Settings
   # ============================
   boot      = "c"
-  boot_wait = "180s"
+  boot_wait = "150s"
   boot_command = [
     # Log in as the 'installer' user
     "installer", "<enter>",
@@ -85,7 +85,7 @@ source "proxmox" "opnsense" {
     "<left>", "<wait1>", "<enter>",
 
     # Wait for OS install
-    "<wait60>",
+    "<wait90>",
 
     # Select 'Root Password"
     "<enter>",
