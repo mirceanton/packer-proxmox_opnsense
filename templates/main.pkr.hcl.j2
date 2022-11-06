@@ -2,60 +2,59 @@ source "proxmox" "opnsense" {
   # ============================
   # Proxmox Connection Settings
   # ============================
-  proxmox_url              = "${var.proxmox_api_url}"
-  username                 = "${var.proxmox_api_token_id}"
-  token                    = "${var.proxmox_api_token_secret}"
-  insecure_skip_tls_verify = true # ignore self signed certs
+  proxmox_url              = "{{ proxmox_api_url }}"
+  username                 = "{{ proxmox_api_token_id }}"
+  token                    = "{{ proxmox_api_token_secret }}"
+  insecure_skip_tls_verify = {{ proxmox_api_insecure | default(true) | string | lower }}
 
   # ============================
   # General Settings
   # ============================
-  node       = "${var.proxmox_node}"
-  vm_id      = "${var.vm_id}"
-  vm_name    = "${var.vm_name}"
-  qemu_agent = false # Disable guest agent
+  node       = "{{ opnsense_tpl_node }}"
+  vm_id      = "{{ opnsense_tpl_id }}"
+  vm_name    = "{{ opnsense_tpl_name | default('opnSense-tpl') }}"
+  qemu_agent = false
 
   # ============================
   # ISO Settings
   # ============================  
-  iso_file    = "${var.iso_file}"
-  unmount_iso = true # Unmount the iso from the CD drive
+  iso_file    = "{{ opnsense_tpl_iso }}"
+  unmount_iso = {{ opnsense_tpl_iso_unmount | default(true) | string | lower }}
 
   # ============================
   # Resource Settings
   # ============================
-  cores  = "1"    # Minimum cpu requirement as per the official doc
-  memory = "2048" # Minimum ram requirement as per the official doc
+  cores  = "{{ opnsense_tpl_cpu_cores | default(2) }}"    # Minimum cpu requirement as per the official doc
+  memory = "{{ opnsense_tpl_memory | default(2048) }}" # Minimum ram requirement as per the official doc
 
   # ============================
   # Disk Settings
   # ============================
-  scsi_controller = "virtio-scsi-pci"
+  scsi_controller = "{{ opnsense_tpl_scsihw | default('virtio-scsi-pci') }}"
+  {% for disk in opnsense_tpl_disks %}
   disks {
-    disk_size         = "16G"
-    storage_pool      = "${var.storage_pool}"
-    storage_pool_type = "${var.storage_pool_type}"
+    disk_size         = "{{ disk.size | default('16G') }}"
+    storage_pool      = "{{ disk.storage_pool }}"
+    storage_pool_type = "{{ disk.storage_pool_type }}"
   }
+  {% endfor %}
 
   # =============================================
-  # NETWORK
+  # NETWORK (lan first, wan second)
   # =============================================
-  network_adapters { # LAN
-    bridge   = "${var.lan_vmbridge}"
-    firewall = false
-    model    = "virtio"
+  {% for nic in opnsense_tpl_networks %}
+  network_adapters {
+    bridge   = "{{ nic.bridge }}"
+    firewall = {{ nic.firewall | default(false) | string | lower }}
+    model    = "{{ nic.model | default('virtio') }}"
   }
-  network_adapters { # WAN
-    bridge   = "${var.wan_vmbridge}"
-    firewall = false
-    model    = "virtio"
-  }
+  {% endfor %}
 
   # ============================
   # Boot Settings
   # ============================
-  boot      = "c"
-  boot_wait = "180s"
+  boot      = "{{ opnsense_tpl_boot_order | default('c') }}"
+  boot_wait = "{{ opnsense_tpl_boot_wait | default('180s') }}"
   boot_command = [
     # Log in as the 'installer' user
     "installer", "<enter>",
@@ -92,11 +91,11 @@ source "proxmox" "opnsense" {
     "<wait1>",
 
     # Set root password
-    "${var.opnsense_root_password}", "<wait1>", "<enter>",
+    "{{ opnsense_tpl_root_pass }}", "<wait1>", "<enter>",
     "<wait1>",
 
     # Confirm password
-    "${var.opnsense_root_password}", "<wait1>", "<enter>",
+    "{{ opnsense_tpl_root_pass }}", "<wait1>", "<enter>",
     "<wait1>",
 
     # Select 'Complete Install'
