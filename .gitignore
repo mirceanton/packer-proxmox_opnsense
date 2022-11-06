@@ -9,3 +9,5 @@ crash.log
 
 # Auto-loaded vars
 *.auto.pkrvars.hcl
+
+template-output/
