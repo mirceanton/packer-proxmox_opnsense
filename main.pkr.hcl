@@ -123,7 +123,7 @@ source "proxmox" "opnsense" {
     "<wait1>",
     "sed -i '' 's/<ssh>/<ssh>\\n\\t\\t<interfaces \\/>/g' /mnt/conf/config.xml", "<enter> ",
     "<wait1>",
-    "sed -i '' 's/192.168.1.1/192.168.69.1/g' /mnt/conf/config.xml", "<enter> ",
+    "sed -i '' 's/192.168.1.1/${var.opnsense_lan_ip}/g' /mnt/conf/config.xml", "<enter> ",
     "<wait1>",
   ]
 

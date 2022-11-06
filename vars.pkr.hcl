@@ -72,3 +72,9 @@ variable "opnsense_root_password" {
   sensitive   = true
   description = "Password for the root account on opnSense."
 }
+
+variable "opnsense_lan_ip" {
+  type        = string
+  default     = "192.168.69.1"
+  description = "The IP address for the LAN network."
+}
