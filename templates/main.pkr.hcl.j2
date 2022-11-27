@@ -54,7 +54,7 @@ source "proxmox" "opnsense" {
   # Boot Settings
   # ============================
   boot      = "{{ opnsense_tpl_boot_order | default('c') }}"
-  boot_wait = "{{ opnsense_tpl_boot_wait | default('180s') }}"
+  boot_wait = "{{ opnsense_tpl_boot_wait | default('120s') }}"
   boot_command = [
     # Log in as the 'installer' user
     "installer", "<enter>",
@@ -84,7 +84,7 @@ source "proxmox" "opnsense" {
     "<left>", "<wait1>", "<enter>",
 
     # Wait for OS install
-    "<wait60>",
+    "<wait90>",
 
     # Select 'Root Password"
     "<enter>",
@@ -122,7 +122,7 @@ source "proxmox" "opnsense" {
     "<wait1>",
     "sed -i '' 's/<ssh>/<ssh>\\n\\t\\t<interfaces \\/>/g' /mnt/conf/config.xml", "<enter> ",
     "<wait1>",
-    "sed -i '' 's/192.168.1.1/192.168.69.1/g' /mnt/conf/config.xml", "<enter> ",
+    "sed -i '' 's/192.168.1.1/{{ opnsense_tpl_lan_ip }}/g' /mnt/conf/config.xml", "<enter> ",
     "<wait1>",
   ]
 

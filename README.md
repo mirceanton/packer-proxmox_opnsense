@@ -11,7 +11,7 @@ A Packer template that creates an opnSense VM template on a Proxmox VE host.
 ## Getting Started
 
 - Clone this repo
-- Downlod the opnSense 22.7 ISO and upload it to your Proxmox server
+- Download the opnSense 22.7 ISO and upload it to your Proxmox server
 - Create a `.auto.pkrvars.hcl` file and customize it
 - Run the `packer init` command
 - Run the `packer build` command
@@ -38,6 +38,7 @@ iso_file = ""
 # OPNSENSE CONFIGURATION
 # ===============================================
 opnsense_root_password = ""
+opnsense_lan_ip = ""
 
 # ===============================================
 # VM TEMPLATE CONFIGURATION
@@ -71,6 +72,7 @@ They are intended to be formatted by an Ansible task, such as:
     proxmox_api_token_secret: "your-token-secret-here"
     proxmox_api_insecure: true
     opnsense_tpl_root_pass: test123
+    opnsense_tpl_lan_ip: "192.168.69.1"
     opnsense_tpl_node: pve01
     opnsense_tpl_id: 1100
     opnsense_tpl_iso: local:iso/OPNsense-22.7.iso
@@ -146,6 +148,7 @@ opnsense_tpl_boot_order: c            # [Optional] Device boot order (disk -> dv
                                       # Options: floppy (a), hard disk (c), CD-ROM (d), or network (n).
 opnsense_tpl_boot_wait: 180s          # [Optional] The amount of time to wait for the installer to start
 opnsense_tpl_root_pass:               # [Required] The password to set for the root user
+opnsense_tpl_lan_ip:                  # [Required] The address for the LAN network
 opnsense_tpl_networks:                # [Required] List of network devices
   - bridge:           # [Required] The name of the network bridge to attach to. (vmbr0, vmbr1 etc)
     firewall: false   # [Optional] Whether or not to 
