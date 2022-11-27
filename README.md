@@ -11,7 +11,7 @@ A Packer template that creates an opnSense VM template on a Proxmox VE host.
 ## Getting Started
 
 - Clone this repo
-- Downlod the opnSense 22.7 ISO and upload it to your Proxmox server
+- Download the opnSense 22.7 ISO and upload it to your Proxmox server
 - Create a `.auto.pkrvars.hcl` file and customize it
 - Run the `packer init` command
 - Run the `packer build` command
@@ -38,6 +38,7 @@ iso_file = ""
 # OPNSENSE CONFIGURATION
 # ===============================================
 opnsense_root_password = ""
+opnsense_lan_ip = ""
 
 # ===============================================
 # VM TEMPLATE CONFIGURATION
